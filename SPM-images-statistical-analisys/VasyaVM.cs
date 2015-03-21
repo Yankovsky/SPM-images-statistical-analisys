@@ -6,7 +6,7 @@ namespace Vasya
 {
     public class VasyaVM : VM
     {
-        private readonly Logic _logic;
+        public readonly Logic Logic;
 
         private BitmapSource _newTopoFilteredImage;
         private BitmapSource _originalTopoFilteredImage;
@@ -16,7 +16,7 @@ namespace Vasya
 
         public VasyaVM(Logic logic)
         {
-            _logic = logic;
+            Logic = logic;
             Value = (MinValue + MaxValue)/2;
         }
 
@@ -48,7 +48,7 @@ namespace Vasya
                 _originalTopoSelected = value;
                 if (value && _valueChanged)
                 {
-                    OriginalTopoFilteredImage = _logic.OriginalImageWithFilteredPoints(Value);
+                    OriginalTopoFilteredImage = Logic.OriginalImageWithFilteredPoints(Value);
                     _valueChanged = false;
                 }
                 NotifyPropertyChanged("OriginalTopoSelected");
@@ -57,12 +57,12 @@ namespace Vasya
 
         public double MinValue
         {
-            get { return _logic.MinValue; }
+            get { return Logic.MinValue; }
         }
 
         public double MaxValue
         {
-            get { return _logic.MaxValue; }
+            get { return Logic.MaxValue; }
         }
 
         public double Value
@@ -74,7 +74,7 @@ namespace Vasya
                 NotifyPropertyChanged("Value");
                 _valueChanged = true;
                 //NewTopoFilteredImage = ImageCreator.CreateBitmap(_logic.FilteredImage(value), _logic.ActualImageSize, _logic.ActualImageSize, PixelFormats.BlackWhite);
-                NewTopoFilteredImage = _logic.FilteredImage(Value);
+                NewTopoFilteredImage = Logic.FilteredImage(Value);
             }
         }
     }

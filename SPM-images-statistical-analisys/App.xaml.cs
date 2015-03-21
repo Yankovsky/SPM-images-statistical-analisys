@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AForge;
+using AForge.Math.Geometry;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;

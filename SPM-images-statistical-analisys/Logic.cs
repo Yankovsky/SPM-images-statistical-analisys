@@ -11,6 +11,8 @@ using System.Windows.Media.Imaging;
 using BitmapProcessing;
 using Color = System.Drawing.Color;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
+using AForge;
+using AForge.Math.Geometry;
 
 namespace Vasya
 {
@@ -60,7 +62,7 @@ namespace Vasya
             _topoMin = a.Min();
             _topoMax = a.Max();
 
-            _newTopo = NewTopo(_topo);
+            _newTopo = GetNewTopo(_topo);
             var b = _newTopo.Cast<double>().ToList();
             MinValue = b.Min();
             MaxValue = b.Max();
@@ -103,7 +105,7 @@ namespace Vasya
             return new Tuple<double, double>(lowLimit, upLimit);
         }
 
-        private double[,] NewTopo(IList<List<double>> topo)
+        private double[,] GetNewTopo(IList<List<double>> topo)
         {
             // Граничные элементы матрицы Topo(i, j) при этом исключаются из рассмотрения
             var newTopo = new double[ActualImageSize, ActualImageSize];
@@ -133,6 +135,21 @@ namespace Vasya
             return newValue;
         }
 
+
+        public List<IntPoint> FindConvexHull(double value)
+        {
+            var points = new List<IntPoint>();
+            for (int i = 0; i < ActualImageSize; i++)
+            {
+                for (int j = 0; j < ActualImageSize; j++)
+                {
+                    if (_newTopo[i, j] < value)
+                        points.Add(new IntPoint(i, j));
+                }
+            }
+            IConvexHullAlgorithm hullFinder = new GrahamConvexHull();
+            return hullFinder.FindHull(points);
+        }
 
         //WHY YOU NOT WORK CORRECTLY BITCH
         public byte[] FilteredImage2(double value)

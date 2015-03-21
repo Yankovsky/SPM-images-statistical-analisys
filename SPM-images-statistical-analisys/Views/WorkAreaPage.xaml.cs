@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Vasya.Views
 {
@@ -7,6 +8,13 @@ namespace Vasya.Views
         public WorkAreaPage()
         {
             InitializeComponent();
+        }
+
+        private void FindConvexHullClicked(object sender, RoutedEventArgs e)
+        {
+            var vm = (this.DataContext as VasyaVM);
+            vm.Logic.FindConvexHull(vm.Value);
+            
         }
     }
 }
